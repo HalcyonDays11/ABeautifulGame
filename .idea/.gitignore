@@ -1,0 +1,11 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+/aws.xml
+/jarRepositories.xml
+/libraries-with-intellij-classes.xml
+# Datasource local storage ignored files
+/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
