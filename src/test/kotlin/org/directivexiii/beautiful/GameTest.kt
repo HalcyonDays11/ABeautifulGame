@@ -1,11 +1,6 @@
 package org.directivexiii.beautiful
 
-import org.directivexiii.beautiful.game.Board
-import org.directivexiii.beautiful.game.Game
-import org.directivexiii.beautiful.game.Player
-import org.directivexiii.beautiful.game.Stone
-import org.directivexiii.beautiful.game.TileColor
-import org.directivexiii.beautiful.game.TileState
+import org.directivexiii.beautiful.game.*
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNotNull
@@ -51,18 +46,58 @@ class GameTest {
         val board = Board()
         val game = Game(board, player1, player2)
 
-        board.placeStone(0, 0, Stone(false, TileState.FLAT, TileColor.WHITE))
-        board.placeStone(1, 0, Stone(false, TileState.FLAT, TileColor.WHITE))
-        board.placeStone(2, 0, Stone(false, TileState.FLAT, TileColor.WHITE))
-        board.placeStone(2, 1, Stone(false, TileState.FLAT, TileColor.WHITE))
-        board.placeStone(2, 2, Stone(false, TileState.FLAT, TileColor.WHITE))
-        board.placeStone(1, 2, Stone(false, TileState.FLAT, TileColor.WHITE))
-        board.placeStone(0, 2, Stone(false, TileState.FLAT, TileColor.WHITE))
+        board.placeStone(0, 0, Stone(TileColor.WHITE))
+        board.placeStone(1, 0, Stone(TileColor.WHITE))
+        board.placeStone(2, 0, Stone(TileColor.WHITE))
+        board.placeStone(2, 1, Stone(TileColor.WHITE))
+        board.placeStone(2, 2, Stone(TileColor.WHITE))
+        board.placeStone(1, 2, Stone(TileColor.WHITE))
+        board.placeStone(0, 2, Stone(TileColor.WHITE))
 
         game.placeStone(0, 3, TileState.FLAT) // White's "first" move
 
         board.printBoard()
         assertNotNull(game.winner)
         assertEquals(game.winner, player1)
+    }
+
+    @Test
+    fun testStack(){
+        val stack = Stack(mutableListOf(Stone(TileColor.WHITE), Stone(TileColor.WHITE), Stone(TileColor.BLACK), Stone(TileColor.BLACK)))
+
+        assertEquals(listOf(Stone(TileColor.WHITE), Stone(TileColor.WHITE), Stone(TileColor.BLACK), Stone(TileColor.BLACK)), stack.currentState())
+
+        assertEquals(Stone(TileColor.WHITE), stack.bottomStone())
+        assertEquals(Stone(TileColor.BLACK), stack.topStone())
+
+        assertEquals(Stone(TileColor.WHITE), stack.dropStone())
+
+        assertEquals(listOf(Stone(TileColor.WHITE), Stone(TileColor.BLACK), Stone(TileColor.BLACK)), stack.currentState())
+
+        stack.placeStone(Stone(TileColor.BLACK))
+
+        assertEquals(listOf(Stone(TileColor.WHITE), Stone(TileColor.BLACK), Stone(TileColor.BLACK), Stone(TileColor.BLACK)), stack.currentState())
+
+        assertEquals(Stack(mutableListOf(Stone(TileColor.BLACK), Stone(TileColor.BLACK))),stack.pickUp(2))
+
+        assertEquals(listOf(Stone(TileColor.WHITE), Stone(TileColor.BLACK)), stack.currentState())
+
+        assertEquals(Stone(TileColor.WHITE), stack.dropStone())
+
+        assertEquals(listOf(Stone(TileColor.BLACK)), stack.currentState())
+
+        stack.dropStone()
+
+        stack.placeStone(Stone(TileColor.WHITE))
+        stack.placeStone(Stone(TileColor.BLACK))
+        stack.placeStones(Stack(mutableListOf(Stone(TileColor.WHITE), Stone(TileColor.BLACK))))
+        stack.placeStone(Stone(TileColor.BLACK))
+
+        assertEquals(listOf(Stone(TileColor.WHITE), Stone(TileColor.BLACK), Stone(TileColor.WHITE),Stone(TileColor.BLACK),Stone(TileColor.BLACK)), stack.currentState())
+
+        assertEquals(Stack(mutableListOf(Stone(TileColor.WHITE), Stone(TileColor.BLACK), Stone(TileColor.WHITE))), stack.dropStones(3))
+
+        assertEquals(listOf(Stone(TileColor.BLACK), Stone(TileColor.BLACK)), stack.currentState())
+
     }
 }

@@ -15,7 +15,7 @@ class Game(val board: Board, val whitePlayer: Player, val blackPlayer: Player) {
 
     fun placeStone(x: Int, y: Int, state: TileState){
         playerStateMap[nextPlayer]!!.remainingPieces--
-        val stone = Stone(false, state, nextPlayer)
+        val stone = Stone(nextPlayer, false, state)
         board.placeStone(x, y, stone)
         if(!checkVictory()){
             swapTurns()
